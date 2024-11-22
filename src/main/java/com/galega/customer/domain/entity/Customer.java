@@ -17,4 +17,7 @@ public class Customer {
     private String name;
     private String email;
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }
