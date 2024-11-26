@@ -3,17 +3,20 @@ package com.galega.customer.adapters.in.rest.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import static org.assertj.core.api.BDDAssertions.then;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class HealthCheckControllerTest {
+public class HealthCheckControllerTest {
 
     @Test
-    void testHealthCheck() {
+    public void testHealthCheck() {
+        // Given
         HealthCheckController controller = new HealthCheckController();
+
+        // When
         ResponseEntity<String> response = controller.test();
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("API is up and running", response.getBody());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).isEqualTo("API is up and running");
     }
 }

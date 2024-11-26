@@ -4,7 +4,6 @@ import com.galega.customer.infrastructure.repository.postgres.CustomerRepository
 import com.galega.customer.adapters.in.rest.dto.PutCustomerDTO;
 import com.galega.customer.domain.usecase.ICustomerUseCase;
 import com.galega.customer.domain.entity.Customer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class CustomerService implements ICustomerUseCase {
 
     @Autowired
     @Qualifier("PGCustomerRepository")
-    private CustomerRepository customerRepository;
+    public CustomerRepository customerRepository;
 
     @Override
     public Customer createCustomer(Customer customer) {

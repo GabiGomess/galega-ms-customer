@@ -9,6 +9,7 @@ class CustomerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//Then
 		Assertions.assertTrue(true);
 	}
 
