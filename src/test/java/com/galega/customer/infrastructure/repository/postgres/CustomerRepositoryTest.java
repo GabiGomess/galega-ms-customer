@@ -1,17 +1,19 @@
 package com.galega.customer.infrastructure.repository.postgres;
 
+import com.galega.customer.adapters.in.rest.dto.PutCustomerDTO;
 import com.galega.customer.domain.entity.Customer;
 import com.galega.customer.infrastructure.repository.postgres.mapper.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class CustomerRepositoryTest {
@@ -68,6 +70,46 @@ public class CustomerRepositoryTest {
         verify(jdbcTemplate, times(1)).query(
                 anyString(),
                 any(CustomerMapper.listMapper.getClass()),
+                eq("12345678900")
+        );
+    }
+
+    @Test
+    public void testGetAll() {
+        // Given
+        Customer customer = new Customer();
+
+        given(jdbcTemplate.query(anyString(), any(CustomerMapper.listMapper.getClass()))).willReturn(List.of(customer));
+
+        // When
+        List<Customer> result = customerRepository.getAll();
+
+        // Then
+        then(result).hasSize(1);
+        verify(jdbcTemplate, times(1)).query(
+                anyString(),
+                any(CustomerMapper.listMapper.getClass())
+        );
+    }
+
+    @Test
+    public void testUpdate() {
+        // Given
+        PutCustomerDTO customerDTO = new PutCustomerDTO();
+        customerDTO.setName("John Doe");
+        customerDTO.setEmail("john.doe@example.com");
+
+        given(jdbcTemplate.update(anyString(), any(), any(), anyString())).willReturn(1);
+
+        // When
+        int result = customerRepository.update(customerDTO, "12345678900");
+
+        // Then
+        then(result).isEqualTo(1);
+        verify(jdbcTemplate, times(1)).update(
+                anyString(),
+                eq(customerDTO.getName()),
+                eq(customerDTO.getEmail()),
                 eq("12345678900")
         );
     }

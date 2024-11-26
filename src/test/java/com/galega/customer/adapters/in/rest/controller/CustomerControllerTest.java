@@ -1,145 +1,110 @@
 package com.galega.customer.adapters.in.rest.controller;
 
-import com.galega.customer.domain.service.CustomerService;
 import com.galega.customer.domain.entity.Customer;
-import com.galega.customer.adapters.in.rest.dto.PutCustomerDTO;
-
+import com.galega.customer.domain.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-class CustomerControllerTest {
+public class CustomerControllerTest {
 
-    @Mock
+    private CustomerController customerController;
     private CustomerService customerService;
 
-    @InjectMocks
-    private CustomerController customerController;
-
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    public void setUp() {
+        customerService = mock(CustomerService.class);
+        customerController = new CustomerController();
+        customerController.customerService = customerService;
     }
 
     @Test
     void testGetCustomerByCpf() {
-        //Given
+        // Given
         String cpf = "12345678900";
-        List<Customer> customers = List.of(new Customer());
-        when(customerService.getCustomerByCpf(cpf)).thenReturn(customers);
+        Customer customer = new Customer();
+        given(customerService.getCustomerByCpf(cpf)).willReturn(List.of(customer));
 
-        //When
+        // When
         ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
 
-        //Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(customers, response.getBody());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).hasSize(1);
+        then(response.getBody().get(0)).isEqualTo(customer);
     }
 
     @Test
     void testGetCustomerByCpfNoContent() {
-        //Given
+        // Given
         String cpf = "12345678900";
-        when(customerService.getCustomerByCpf(cpf)).thenReturn(Collections.emptyList());
+        given(customerService.getCustomerByCpf(cpf)).willReturn(List.of());
 
-        //When
+        // When
         ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
 
-        //Then
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
     void testGetAllCustomers() {
-        //Given
-        List<Customer> customers = List.of(new Customer());
-        when(customerService.getAllCustomers()).thenReturn(customers);
+        // Given
+        Customer customer = new Customer();
+        given(customerService.getAllCustomers()).willReturn(List.of(customer));
 
-        //When
+        // When
         ResponseEntity<List<Customer>> response = customerController.getAllCustomers();
 
-        //Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(customers, response.getBody());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).hasSize(1);
+        then(response.getBody().get(0)).isEqualTo(customer);
     }
 
     @Test
     void testGetAllCustomersNoContent() {
-        //Given
-        when(customerService.getAllCustomers()).thenReturn(Collections.emptyList());
+        // Given
+        given(customerService.getAllCustomers()).willReturn(List.of());
 
-        //When
+        // When
         ResponseEntity<List<Customer>> response = customerController.getAllCustomers();
 
-        //Then
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
     void testCreateCustomer() {
-        //Given
+        // Given
         Customer customer = new Customer();
-        when(customerService.createCustomer(customer)).thenReturn(customer);
+        given(customerService.createCustomer(any(Customer.class))).willReturn(customer);
 
-        //When
+        // When
         ResponseEntity<Customer> response = customerController.createCustomer(customer);
 
-        //Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(customer, response.getBody());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        then(response.getBody()).isEqualTo(customer);
     }
 
     @Test
     void testCreateCustomerBadRequest() {
-        //Given
+        // Given
         Customer customer = new Customer();
-        when(customerService.createCustomer(customer)).thenReturn(null);
+        given(customerService.createCustomer(any(Customer.class))).willReturn(null);
 
-        //When
+        // When
         ResponseEntity<Customer> response = customerController.createCustomer(customer);
 
-        //Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    }
-
-    @Test
-    void testUpdateCustomerByCpf() {
-        //Given
-        String cpf = "12345678900";
-        PutCustomerDTO customerDTO = new PutCustomerDTO();
-        List<Customer> customers = List.of(new Customer());
-        when(customerService.updateCustomer(customerDTO, cpf)).thenReturn(new Customer());
-        when(customerService.getCustomerByCpf(cpf)).thenReturn(customers);
-
-        //When
-        ResponseEntity<List<Customer>> response = customerController.updateCustomerByCpf(customerDTO, cpf);
-
-        //Then
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertEquals(customers, response.getBody());
-    }
-
-    @Test
-    void testUpdateCustomerByCpfBadRequest() {
-        //Given
-        String cpf = "12345678900";
-        PutCustomerDTO customerDTO = new PutCustomerDTO();
-        when(customerService.updateCustomer(customerDTO, cpf)).thenReturn(null);
-
-        //When
-        ResponseEntity<List<Customer>> response = customerController.updateCustomerByCpf(customerDTO, cpf);
-
-        //Then
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

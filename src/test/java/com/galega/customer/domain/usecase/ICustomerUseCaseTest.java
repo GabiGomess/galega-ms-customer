@@ -5,7 +5,6 @@ import com.galega.customer.domain.entity.Customer;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -62,12 +61,16 @@ public class ICustomerUseCaseTest {
 
     @Test
     public void testUpdateCustomer() {
+        // Given
         ICustomerUseCase useCase = mock(ICustomerUseCase.class);
         PutCustomerDTO customerDTO = new PutCustomerDTO();
-        when(useCase.updateCustomer(any(PutCustomerDTO.class), anyString())).thenReturn(customerDTO);
+        given(useCase.updateCustomer(any(PutCustomerDTO.class), anyString())).willReturn(customerDTO);
 
+        // When
         PutCustomerDTO result = useCase.updateCustomer(customerDTO, "12345678900");
-        assertEquals(customerDTO, result);
+
+        // Then
+        then(result).isEqualTo(customerDTO);
         verify(useCase, times(1)).updateCustomer(customerDTO, "12345678900");
     }
 }

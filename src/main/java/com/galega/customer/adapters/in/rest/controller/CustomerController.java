@@ -14,8 +14,7 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    @Autowired CustomerService customerService;
 
     @GetMapping("/{cpf}")
     public ResponseEntity<List<Customer>> getCustomerByCpf(@PathVariable String cpf) {
