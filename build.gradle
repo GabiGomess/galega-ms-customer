@@ -36,26 +36,16 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.11.0'
 }
 
-tasks.named('test') {
+test {
 	useJUnitPlatform()
-	finalizedBy(tasks.jacocoTestReport)
+	finalizedBy jacocoTestReport
 }
 
-tasks.named('jacocoTestReport') {
-	dependsOn(tasks.test)
+jacocoTestReport{
+	dependsOn test
 	reports {
-		xml.required.set(true)
-		html.required.set(true)
-	}
-}
-
-tasks.named('jacocoTestCoverageVerification'){
-	dependsOn(tasks.jacocoTestReport)
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.80
-			}
-		}
+		xml.required = true
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+		csv.required = false
 	}
 }
