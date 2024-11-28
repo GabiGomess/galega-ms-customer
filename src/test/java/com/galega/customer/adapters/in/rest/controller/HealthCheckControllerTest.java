@@ -19,4 +19,18 @@ public class HealthCheckControllerTest {
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         then(response.getBody()).isEqualTo("API is up and running");
     }
+
+    @Test
+    public void testHealthCheckWithCustomMessage() {
+        // Given
+        HealthCheckController controller = new HealthCheckController();
+
+        // When
+        ResponseEntity<String> response = controller.test();
+
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).isEqualTo("API is up and running");
+    }
 }
