@@ -23,5 +23,7 @@ WORKDIR /app
 COPY --from=builder /home/gradle/src/build/libs/galega-ms-customer-*.jar /app/galega-ms-customer.jar
 COPY src/main/resources /app/resources
 
+EXPOSE 7777
+
 # Specify the command to run the application
 CMD ["java", "-jar", "galega-ms-customer.jar"]
