@@ -3,7 +3,7 @@ name: Push and Deploy to EKS
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   build-and-push:
     name: Build and Deploy
