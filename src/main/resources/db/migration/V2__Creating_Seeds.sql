@@ -5,3 +5,11 @@ VALUES (
    'Gabriela Oliveira Martins Gomes',
    'gabrielaofgomes@gmail.com'
 );
+
+INSERT INTO public.customer (id, cpf, name, email)
+VALUES (
+   '29e59731-ebc6-468b-8597-d4a80cfac6cc',
+   '11111111111',
+   'Usuario nao identificado',
+   'usuario_desconhecido@galega.com'
+);
