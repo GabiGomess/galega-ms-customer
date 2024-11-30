@@ -8,4 +8,4 @@
 Este repositorio tem como função agregar todo o escopo dos microserviços de gerenciamento cliente dentro
 da solução proposta no Tech Challenge da Fiap para o Pos-Tech de Arquitetura de Software.
 
-Editado por: Gava
+Editado por: Gava  =D
