@@ -36,12 +36,11 @@ public class CustomerControllerTest {
         given(customerService.getCustomerByCpf(cpf)).willReturn(List.of(customer));
 
         // When
-        ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(cpf, true);
 
         // Then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        then(response.getBody()).hasSize(1);
-        then(response.getBody().get(0)).isEqualTo(customer);
+        then(response.getBody()).isEqualTo(customer);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class CustomerControllerTest {
         given(customerService.getCustomerByCpf(cpf)).willReturn(List.of());
 
         // When
-        ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(cpf, true);
 
         // Then
         then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
