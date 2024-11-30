@@ -22,7 +22,6 @@ public class CustomerController {
         @PathVariable String id,
         @RequestParam(required = false) boolean isCpf
     ) {
-
         if(isCpf) {
             var customers = customerService.getCustomerByCpf(id);
             if(customers.isEmpty()) {

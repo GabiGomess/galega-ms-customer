@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
@@ -36,12 +37,29 @@ public class CustomerControllerTest {
         given(customerService.getCustomerByCpf(cpf)).willReturn(List.of(customer));
 
         // When
-        ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(cpf, true);
 
         // Then
         then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        then(response.getBody()).hasSize(1);
-        then(response.getBody().get(0)).isEqualTo(customer);
+        then(response.getBody()).isEqualTo(customer);
+    }
+
+    @Test
+    void testGetCustomerById() {
+        // Given
+        String id = "3aaf2bb6-d977-4d1e-83e3-704453feac15";
+        UUID uuid = UUID.fromString(id);
+        Customer customer = new Customer();
+        customer.setId(uuid);
+
+        given(customerService.getCustomerById(uuid)).willReturn(customer);
+
+        // When
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(id, false);
+
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).isEqualTo(customer);
     }
 
     @Test
@@ -51,7 +69,24 @@ public class CustomerControllerTest {
         given(customerService.getCustomerByCpf(cpf)).willReturn(List.of());
 
         // When
-        ResponseEntity<List<Customer>> response = customerController.getCustomerByCpf(cpf);
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(cpf, true);
+
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void testGetCustomerByIdNoContent() {
+        // Given
+        String id = "3aaf2bb6-d977-4d1e-83e3-704453feac15";
+        UUID uuid = UUID.fromString(id);
+        Customer customer = new Customer();
+        customer.setId(uuid);
+
+        given(customerService.getCustomerById(uuid)).willReturn(null);
+
+        // When
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(id, false);
 
         // Then
         then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
