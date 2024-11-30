@@ -46,6 +46,18 @@ public class CustomerRepository implements ICustomerRepository {
     }
 
     @Override
+    public Customer getById(String id) {
+        String sql = "SELECT * FROM customer WHERE id = ?";
+        List<Customer> result = jdbcTemplate.query(
+            sql,
+            CustomerMapper.listMapper,
+            id);
+
+        if(result.isEmpty()) return null;
+        else return result.get(0);
+    }
+
+    @Override
     public List<Customer> getAll() {
         String sql = "SELECT * FROM customer ORDER BY name";
         return jdbcTemplate.query(
