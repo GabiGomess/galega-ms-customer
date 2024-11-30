@@ -24,17 +24,17 @@ public class CustomerController {
     ) {
 
         if(isCpf) {
-            var customer = customerService.getCustomerById(UUID.fromString(id));
-            if(customer == null) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(customer);
-        } else {
             var customers = customerService.getCustomerByCpf(id);
             if(customers.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(customers.get(0));
+        } else {
+            var customer = customerService.getCustomerById(UUID.fromString(id));
+            if(customer == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(customer);
         }
 
     }
