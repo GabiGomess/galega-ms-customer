@@ -32,7 +32,7 @@ public class CustomerService implements ICustomerUseCase {
 
     @Override
     public Customer getCustomerById(UUID id) {
-        return customerRepository.getById(id.toString());
+        return customerRepository.getById(id);
     }
 
     @Override
