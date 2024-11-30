@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
@@ -44,6 +45,24 @@ public class CustomerControllerTest {
     }
 
     @Test
+    void testGetCustomerById() {
+        // Given
+        String id = "3aaf2bb6-d977-4d1e-83e3-704453feac15";
+        UUID uuid = UUID.fromString(id);
+        Customer customer = new Customer();
+        customer.setId(uuid);
+
+        given(customerService.getCustomerById(uuid)).willReturn(customer);
+
+        // When
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(id, false);
+
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(response.getBody()).isEqualTo(customer);
+    }
+
+    @Test
     void testGetCustomerByCpfNoContent() {
         // Given
         String cpf = "12345678900";
@@ -51,6 +70,23 @@ public class CustomerControllerTest {
 
         // When
         ResponseEntity<Customer> response = customerController.getCustomerByCpf(cpf, true);
+
+        // Then
+        then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void testGetCustomerByIdNoContent() {
+        // Given
+        String id = "3aaf2bb6-d977-4d1e-83e3-704453feac15";
+        UUID uuid = UUID.fromString(id);
+        Customer customer = new Customer();
+        customer.setId(uuid);
+
+        given(customerService.getCustomerById(uuid)).willReturn(null);
+
+        // When
+        ResponseEntity<Customer> response = customerController.getCustomerByCpf(id, false);
 
         // Then
         then(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
