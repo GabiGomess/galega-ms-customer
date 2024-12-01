@@ -2,7 +2,7 @@
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=GabiGomess_galega-ms-customer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=GabiGomess_galega-ms-customer)
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=gabrielgaava_galega-ms-customer)
 
 
 Este repositorio tem como função agregar todo o escopo dos microserviços de gerenciamento cliente dentro
