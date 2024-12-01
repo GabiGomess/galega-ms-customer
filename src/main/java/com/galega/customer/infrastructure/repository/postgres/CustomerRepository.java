@@ -6,9 +6,11 @@ import com.galega.customer.adapters.in.rest.dto.PutCustomerDTO;
 import com.galega.customer.domain.entity.Customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.UUID;
 
 @Repository("PGCustomerRepository")
 public class CustomerRepository implements ICustomerRepository {
@@ -43,6 +45,20 @@ public class CustomerRepository implements ICustomerRepository {
                 sql,
                 CustomerMapper.listMapper,
                 cpf);
+    }
+
+    @Override
+    public Customer getById(UUID id) {
+        String sql = "SELECT * FROM customer WHERE id = ?";
+        try {
+            return jdbcTemplate.queryForObject(
+                sql,
+                CustomerMapper.listMapper,
+                id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

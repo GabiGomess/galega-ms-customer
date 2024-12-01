@@ -31,6 +31,11 @@ public class CustomerService implements ICustomerUseCase {
     }
 
     @Override
+    public Customer getCustomerById(UUID id) {
+        return customerRepository.getById(id);
+    }
+
+    @Override
     public List<Customer> getAllCustomers() {
         return customerRepository.getAll();
     }

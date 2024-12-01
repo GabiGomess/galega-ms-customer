@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/customers")
@@ -16,13 +17,25 @@ public class CustomerController {
 
     @Autowired CustomerService customerService;
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<List<Customer>> getCustomerByCpf(@PathVariable String cpf) {
-        var customers = customerService.getCustomerByCpf(cpf);
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> getCustomerByCpf(
+        @PathVariable String id,
+        @RequestParam(required = false) boolean isCpf
+    ) {
+        if(isCpf) {
+            var customers = customerService.getCustomerByCpf(id);
+            if(customers.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(customers.get(0));
+        } else {
+            var customer = customerService.getCustomerById(UUID.fromString(id));
+            if(customer == null) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(customer);
+        }
 
-        if(customers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }   return ResponseEntity.ok(customers);
     }
 
     @GetMapping
